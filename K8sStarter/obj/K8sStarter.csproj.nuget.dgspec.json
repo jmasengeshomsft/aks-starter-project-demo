@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jmasengesho\\documents\\workspace\\AKS Playground\\repos\\MFG-AKS-STARTER-PROJECT\\K8sStarter\\K8sStarter.csproj": {}
+    "C:\\Users\\jmasengesho\\documents\\workspace\\AKS Playground\\sample-apps\\aks-starter-project-demo\\K8sStarter\\K8sStarter.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jmasengesho\\documents\\workspace\\AKS Playground\\repos\\MFG-AKS-STARTER-PROJECT\\K8sStarter\\K8sStarter.csproj": {
+    "C:\\Users\\jmasengesho\\documents\\workspace\\AKS Playground\\sample-apps\\aks-starter-project-demo\\K8sStarter\\K8sStarter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jmasengesho\\documents\\workspace\\AKS Playground\\repos\\MFG-AKS-STARTER-PROJECT\\K8sStarter\\K8sStarter.csproj",
+        "projectUniqueName": "C:\\Users\\jmasengesho\\documents\\workspace\\AKS Playground\\sample-apps\\aks-starter-project-demo\\K8sStarter\\K8sStarter.csproj",
         "projectName": "K8sStarter",
-        "projectPath": "C:\\Users\\jmasengesho\\documents\\workspace\\AKS Playground\\repos\\MFG-AKS-STARTER-PROJECT\\K8sStarter\\K8sStarter.csproj",
+        "projectPath": "C:\\Users\\jmasengesho\\documents\\workspace\\AKS Playground\\sample-apps\\aks-starter-project-demo\\K8sStarter\\K8sStarter.csproj",
         "packagesPath": "C:\\Users\\jmasengesho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jmasengesho\\documents\\workspace\\AKS Playground\\repos\\MFG-AKS-STARTER-PROJECT\\K8sStarter\\obj\\",
+        "outputPath": "C:\\Users\\jmasengesho\\documents\\workspace\\AKS Playground\\sample-apps\\aks-starter-project-demo\\K8sStarter\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\jmasengesho\\AppData\\Roaming\\NuGet\\NuGet.Config",
