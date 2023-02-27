@@ -36,5 +36,5 @@ jobs:
         with:
           context: ./K8sStarter
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ github.run_number }} #${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
