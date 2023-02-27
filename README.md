@@ -1,1 +1,1 @@
-# aks-starter-project-demo
+# MFG-AKS-STARTER-PROJECT
