@@ -15,7 +15,7 @@ namespace K8sStarter.Services
             string keyVaultName = Environment.GetEnvironmentVariable("KEY_VAULT_NAME");
             var kvUri = "https://" + keyVaultName + ".vault.azure.net";
             KVClient = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());          
-        }
+        } 
 
         public async Task<string> GetSecretAsync(string secretName)
         {

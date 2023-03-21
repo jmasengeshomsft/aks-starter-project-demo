@@ -1,5 +1,7 @@
 using K8sStarter.Services;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.HttpOverrides;
+using K8sStarter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,10 @@ builder.Services.AddSingleton<IKeyVaultService, KeyVaultService>();
 //     {
 //         options.HttpsPort = 443;
 //     });
+
+GlobalSettings.CloudRoleName = "K8sStarter";
+builder.Services.AddApplicationInsightsTelemetry();
+builder.Services.AddSingleton<ITelemetryInitializer, CloudRoleNameInitializer>();
 
 var app = builder.Build();
 
