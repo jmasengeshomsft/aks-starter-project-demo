@@ -1,6 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 WORKDIR /App
 
+EXPOSE 8080
+ENV ASPNETCORE_URLS=http://*:8080
+
 # Copy everything
 COPY . ./
 # Restore as distinct layers
