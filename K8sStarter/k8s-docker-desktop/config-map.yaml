@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  APPLICATIONINSIGHTS_CONNECTION_STRING: InstrumentationKey=a76e0510-7511-4884-8f9c-1e50a693f53a;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/
+  configKey: someValue
+  keyVaultName: mfgpgdevkv001
+kind: ConfigMap
+metadata:
+  labels:
+    toolkit.fluxcd.io/tenant: demo-tenant
+  name: demo-tenant-starter-app-configmap
+  namespace: demo-tenant
