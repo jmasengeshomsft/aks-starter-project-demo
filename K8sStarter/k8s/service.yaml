@@ -13,3 +13,4 @@ spec:
   selector:
     app: starter-app
   type: LoadBalancer
+  externalTrafficPolicy: Local
