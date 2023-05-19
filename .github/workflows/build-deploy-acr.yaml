@@ -1,5 +1,5 @@
 
-name: 'DeployToDoAPI'
+name: 'DeployDemoAPI'
 
 on: workflow_dispatch
 
