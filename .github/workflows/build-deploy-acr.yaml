@@ -1,0 +1,90 @@
+
+name: 'DeployToDoAPI'
+
+on: workflow_dispatch
+
+env:
+  AZURE_CONTAINER_REGISTRY: "mfgpgdevacr001"
+  RGISTRY_RESOURCE_GROUP: "mfg-pg-dev-rg"
+  CONTAINER_NAME: "demoapp"
+  RESOURCE_GROUP: "mfg-pg-dev-rg"
+  CLUSTER_NAME: "mfg-pg-dev-aks001"
+  DEPLOYMENT_MANIFEST_PATH: "./K8sStarter/k8s"
+
+jobs:
+  buildImage:
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      # Checks out the repository this file is in
+      - uses: actions/checkout@v3
+
+      # Logs in with your Azure credentials
+      - name: Azure login
+        uses: azure/login@v1.4.6
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          # client-id: ${{ secrets.AZURE_OIDC_CLIENT_ID }}
+          # tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          # subscription-id: ${{ secrets.AZURE_SUB_ID }}
+
+      # Builds and pushes an image up to your Azure Container Registry
+      - name: Build and push image to ACR
+        run: |
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.RGISTRY_RESOURCE_GROUP }} ./K8sStarter
+
+  deploy:
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    needs: [buildImage]
+    steps:
+      # Checks out the repository this file is in
+      - uses: actions/checkout@v3
+
+      # Logs in with your Azure credentials
+      - name: Azure login
+        uses: azure/login@v1.4.6
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          # client-id: ${{ secrets.AZURE_OIDC_CLIENT_ID  }}
+          # tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          # subscription-id: ${{ secrets.AZURE_SUB_ID }}
+
+      # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
+      - name: Get K8s context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ env.RESOURCE_GROUP }}
+          cluster-name: ${{ env.CLUSTER_NAME }}
+
+      - uses: azure/k8s-bake@v2.2
+        with:
+          renderEngine: 'kustomize'
+          kustomizationPath: './K8sStarter/k8s/'
+          # arguments: |
+          #     --ca-file
+          #     ./ca-file/
+          kubectl-version: 'latest'
+        id: bakeKustomize
+
+      - name: Deploys application
+        uses: Azure/k8s-deploy@v4
+        with:
+          action: deploy
+          resource-group: jm-dev-aks-rg
+          name: jm-dev-cluster
+          namespace: 'demo-tenant'
+          private-cluster: false
+          manifests: ${{ steps.bakeKustomize.outputs.manifestsBundle }}
+          # //manifests: ${{ env.DEPLOYMENT_MANIFEST_PATH }}
+          # manifests: |
+          #     ./sample-apis/TodoAPI/k8s/ingress.yaml
+          #     ./sample-apis/TodoAPI/k8s/deployment.yaml
+          #     ./sample-apis/TodoAPI/k8s/service.yaml
+          images: |
+            ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}

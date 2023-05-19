@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: starter-app
+  name: demo-tenant-starter-app
+  namespace: demo-tenant
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: starter-app
+  template:
+    metadata:
+      labels:
+        app: starter-app
+    spec:
+      containers:
+      - env:
+        - name: KEY_VAULT_NAME
+          valueFrom:
+            configMapKeyRef:
+              key: keyVaultName
+              name: demo-tenant-starter-app-configmap
+        - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+          valueFrom:
+            configMapKeyRef:
+              key: APPLICATIONINSIGHTS_CONNECTION_STRING
+              name: demo-tenant-starter-app-configmap
+        image: mfgpgdevacr001.azurecr.io/demoapp
+        livenessProbe:
+          httpGet:
+            path: /api/weatherforecast
+            port: 8080
+          initialDelaySeconds: 15
+        name: starter-app
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /api/weatherforecast
+            port: 8080
+          initialDelaySeconds: 15
+        resources:
+          limits:
+            cpu: 250m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      securityContext:
+        fsGroup: 2001
+        runAsGroup: 3001
+        runAsUser: 1001
